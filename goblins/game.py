@@ -1,37 +1,48 @@
 import numpy
+from colorama import init
+from colorama import Fore, Back, Style
+import logging
+
+init()
 
 
-def draw_board(b):
-    print('-------')
-    print('|{:01.0f}|{:01.0f}|{:01.0f}|'.format(b[0], b[1], b[2]))
-    print('-------')
-    print('|{:01.0f}|{:01.0f}|{:01.0f}|'.format(b[3], b[4], b[5]))
-    print('-------')
-    print('|{:01.0f}|{:01.0f}|{:01.0f}|'.format(b[6], b[7], b[8]))
-    print('-------')
+def render(b):
+    # print(numpy.reshape(b, (3, 3)))
+    for row in range(0, 3):
+        print(Style.RESET_ALL+'-------')
+        print_row = '|'
+        for column in range(0, 3):
+            print_row += _colorize(b[column + (3*row)]) + '|'
+        print(print_row)
+    print(Style.RESET_ALL+'-------')
 
 
-def move(to, player, board):
+def _colorize(player):
+    if(player == 1):
+        return Fore.RED + 'X' + Style.RESET_ALL
+    if(player == 2):
+        return Fore.GREEN + 'O' + Style.RESET_ALL
+    if(player == 0):
+        return ' '
+
+
+def _move(to, player, board):
     try:
         to = int(to) - 1
     except:
-        print('Wrong input [{}]'.format(to))
-        return False, board
+        return False, board, 'Wrong input [{}]'.format(to)
 
     if to > 8 or to < 0:
-        print('Input must be between 1 - 9. Entered: {}'.format(to))
-        return False, board
+        return False, board, 'Input must be between 1 - 9. Entered: {}'.format(to)
 
     if not isinstance(player, int) or player < 1 or player > 2:
-        print('Player must be number 1 or 2')
-        return False, board
+        return False, board, 'Player must be number 1 or 2'
 
     if board[to] > 0:
-        print('Field is already taken.') 
-        return False, board
+        return False, board, 'Field is already taken.'
 
     board[to] = player
-    return True, board
+    return True, board, 'OK'
 
 
 def is_done(board):
@@ -53,14 +64,13 @@ def is_done(board):
                     done = False
                     next
             if done:
-                return True, player
-    
+                return True, player, "Player {} completed row.".format(player)
+
     # All fields are filled?
     for cell in board:
         if cell == 0:
-            return False, None
-    print("FULL")
-    return True, None
+            return False, None, "No"
+    return True, None, "Board is full."
 
 
 def new_game():
@@ -68,6 +78,6 @@ def new_game():
 
 
 def make_move(to, player, board):
-    moved, board = move(to, player, board)
-    done, winner = is_done(board)
-    return moved, board, done, winner
+    moved, board, move_info = _move(to, player, board)
+    done, winner, done_info = is_done(board)
+    return moved, board, done, winner, 'Is Done:{} Move info:{}'.format(done_info, move_info)
