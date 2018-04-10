@@ -73,6 +73,14 @@ def is_done(board):
     return True, None, "Board is full."
 
 
+def available_moves(board):
+    moves = []
+    for i in range(0, len(board)):
+        if board[i] == 0:
+            moves.append(i)
+    return moves
+
+
 def new_game():
     return numpy.zeros((9))
 

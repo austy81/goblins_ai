@@ -14,7 +14,7 @@ class GameTest(unittest.TestCase):
 
     def test_is_not_done(self):
         board = self._get_board()
-        done, winner = goblins.game.is_done(board)
+        done, winner, message = goblins.game.is_done(board)
 
         self.assertFalse(done)
         self.assertIsNone(winner)
@@ -23,8 +23,8 @@ class GameTest(unittest.TestCase):
         board = self._get_board()
 
         for player in range(1, 2):
-            board[0:3] = player = 1
-            done, winner = goblins.game.is_done(board)
+            board[0:3] = player
+            done, winner, message = goblins.game.is_done(board)
 
             self.assertTrue(done)
             self.assertEqual(winner, player)
@@ -33,8 +33,11 @@ class GameTest(unittest.TestCase):
         board = self._get_board()
 
         for player in range(1, 2):
-            board[0, 3, 4, 5] = player = 1
-            done, winner = goblins.game.is_done(board)
+            board[0] = player
+            board[3] = player
+            board[4] = player
+            board[5] = player
+            done, winner, message = goblins.game.is_done(board)
 
             self.assertTrue(done)
             self.assertEqual(winner, player)

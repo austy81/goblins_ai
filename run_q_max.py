@@ -2,16 +2,18 @@ import numpy as np
 from random import randint
 import time
 
-from agents import agent_max_q as a1
-from agents import agent_max_q as a2
+from agents.agent_max_q import Agent
 
 from goblins import game
 
 
 # https://github.com/DanielSlater/AlphaToe
 def run():
-    winner = [0, 0, 0]
-    for episode in range(1, 1000001):
+    a1 = Agent()
+    a2 = Agent()
+    no_wins = [0, 0, 0]
+
+    for episode in range(1, 1000):
         done = False
         player_1 = 1
         player_2 = 2
@@ -20,36 +22,36 @@ def run():
         while not done:
             moved = False
             if player_1 == cur_player:
+                initial_board = list(board)
                 action = a1.act(board)
-                old_board = board
                 moved, board, done, winner, info = game.make_move(
-                    action, cur_player, board)  # 2
+                    action, cur_player, board)
+                
                 reward = _get_reward(moved, done, winner == cur_player)
-                a1.learn(old_board, board, action, reward)
+                a1.learn(initial_board, action, reward)
             else:
-                # moved, board, done, winner, info = game.make_move(
-                #     randint(1, 9), player_2, board)
+                initial_board = list(board)
                 action = a2.act(board)
-                old_board = board
                 moved, board, done, winner, info = game.make_move(
-                    action, cur_player, board)  # 2
+                    action, cur_player, board)
                 reward = _get_reward(moved, done, winner == cur_player)
-                a2.learn(old_board, board, action, reward)
-            #game.render(board)
-            #time.sleep(0.1)
-            if done and cur_player:
-                winner[cur_player] = winner[cur_player] + 1
+                a2.learn(initial_board, action, reward)
+            if done:
+                no_wins[cur_player] = no_wins[cur_player] + 1
+                a1.new_game()
+                a2.new_game()
             if moved:
                 cur_player = player_1 if cur_player == player_2 else player_2
 
-
-        if episode % 1000 == 0:
-            print('Episode {} player1 wins:{}'.format(episode, winner[0]))
+        if episode % 100 == 0:
+            game.render(board)
+            time.sleep(1)
+            print('Episode {} player1 wins:{}'.format(episode, no_wins[2]))
 
 
 def _get_reward(moved, done, winner):
     if not moved:
-        return -10
+        return -100
     if done and winner:
         return +10
     if done and not winner:
