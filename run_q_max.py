@@ -6,7 +6,7 @@ from agents.agent_max_q import Agent
 
 from goblins import game
 
-
+# FIX when player one wins
 # https://github.com/DanielSlater/AlphaToe
 def run():
     a1 = Agent()
@@ -49,7 +49,7 @@ def run():
             if moved:
                 cur_player = player_1 if cur_player == player_2 else player_2
 
-        if episode % 1000 == 0:
+        if episode % 10 == 0:
             game.render(board)
             time.sleep(1)
             print('Episode {} player1 wins:{}'.format(episode, no_wins[2]))
