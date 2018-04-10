@@ -13,7 +13,7 @@ def run():
     a2 = Agent()
     no_wins = [0, 0, 0]
 
-    for episode in range(1, 1000):
+    for episode in range(1, 100001):
         done = False
         player_1 = 1
         player_2 = 2
@@ -38,12 +38,18 @@ def run():
                 a2.learn(initial_board, action, reward)
             if done:
                 no_wins[cur_player] = no_wins[cur_player] + 1
+                other_player = player_1 if cur_player == player_2 else player_2
+                if other_player == 1:
+                    a1.learn(list(board), 0, -20)
+                else:
+                    a2.learn(list(board), 0, -20)
+
                 a1.new_game()
                 a2.new_game()
             if moved:
                 cur_player = player_1 if cur_player == player_2 else player_2
 
-        if episode % 100 == 0:
+        if episode % 1000 == 0:
             game.render(board)
             time.sleep(1)
             print('Episode {} player1 wins:{}'.format(episode, no_wins[2]))
