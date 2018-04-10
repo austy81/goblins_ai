@@ -49,7 +49,7 @@ def run():
             if moved:
                 cur_player = player_1 if cur_player == player_2 else player_2
 
-        if episode % 10 == 0:
+        if episode % 100 == 0:
             game.render(board)
             time.sleep(1)
             print('Episode {} player1 wins:{}'.format(episode, no_wins[2]))
