@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Python36\\python.exe",
+    "python.pythonPath": "C:\\virtenv\\tensorflow\\scripts\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
@@ -10,5 +10,6 @@
         "-p",
         "*_test.py"
     ],
-    "python.unitTest.unittestEnabled": true
+    "python.unitTest.unittestEnabled": true,
+    "python.formatting.provider": "autopep8"
 }

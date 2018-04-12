@@ -24,7 +24,8 @@ class AgentMaxQ:
         if reward == -100:
             self.Q[state, action] += -100
             return
-        self.history.append({'state': state, 'action': action, 'reward': reward})
+        self.history.append(
+            {'state': state, 'action': action, 'reward': reward})
         self._propagate_reward(reward)
 
     def _propagate_reward(self, reward):
