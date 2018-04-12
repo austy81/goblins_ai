@@ -28,12 +28,12 @@ def _colorize(player):
 
 def _move(to, player, board):
     try:
-        to = int(to) - 1
+        to = int(to)
     except:
         return False, board, 'Wrong input [{}]'.format(to)
 
     if to > 8 or to < 0:
-        return False, board, 'Input must be between 1 - 9. Entered: {}'.format(to)
+        return False, board, 'Input must be between 0 - 8. Entered: {}'.format(to)
 
     if not isinstance(player, int) or player < 1 or player > 2:
         return False, board, 'Player must be number 1 or 2'
