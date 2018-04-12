@@ -22,7 +22,7 @@ class GameTest(unittest.TestCase):
     def test_is_done_win(self):
         board = self._get_board()
 
-        for player in range(1, 2):
+        for player in range(1, 3):
             board[0:3] = player
             done, winner, message = goblins.game.is_done(board)
 
@@ -32,7 +32,7 @@ class GameTest(unittest.TestCase):
     def test_is_done_full(self):
         board = self._get_board()
 
-        for player in range(1, 2):
+        for player in range(1, 3):
             board[0] = player
             board[3] = player
             board[4] = player

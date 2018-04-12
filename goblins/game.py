@@ -56,7 +56,7 @@ def is_done(board):
         [3, 6, 9],
         [1, 5, 9],
         [3, 5, 7]]
-    for player in range(1, 2):
+    for player in range(1, 3):
         for win_config in win_configs:
             done = True
             for index in win_config:
