@@ -3,13 +3,14 @@ import time
 from agents import agent_max_q
 from agents import agent_me
 from agents import agent_random
+from agents import agent_next
 
 from goblins import game
 
 
 # https://github.com/DanielSlater/AlphaToe
 def run():
-    a1 = agent_max_q.AgentMaxQ()
+    a1 = agent_next.AgentNext()
     a2 = agent_max_q.AgentMaxQ()
     no_wins = [0, 0, 0]
     player_1 = 1
@@ -45,7 +46,7 @@ def run():
                 cur_player = player_1 if cur_player == player_2 else player_2
 
         if episode % 10000 == 0:
-            # a1 = agent_me()
+            #a1 = agent_me.AgentMe()
             game.render(board)
             print('Episode {} WINS {}: {} {}: {} DRAWS: {}'.format(
                 episode, a1.__class__.__name__, no_wins[1], a2.__class__.__name__, no_wins[2], no_wins[0]))

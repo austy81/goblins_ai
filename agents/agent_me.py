@@ -8,7 +8,7 @@ class AgentMe:
 
     def act(self, board):
         game.render(board)
-        return input("insert your move [0-8]:")
+        return int(input("insert your move [1-9]:")) - 1
 
     def new_game(self):
         pass
