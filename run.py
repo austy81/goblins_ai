@@ -4,13 +4,14 @@ from agents import agent_max_q
 from agents import agent_me
 from agents import agent_random
 from agents import agent_next
+from agents import agent_keras
 
 from goblins import game
 
 
 # https://github.com/DanielSlater/AlphaToe
 def run():
-    a1 = agent_next.AgentNext()
+    a1 = agent_keras.AgentKeras()
     a2 = agent_max_q.AgentMaxQ()
     no_wins = [0, 0, 0]
     player_1 = 1
@@ -58,11 +59,11 @@ def _get_reward(moved, done, winner, cur_player):
     if not moved:
         return -10000
     if done and not winner:  # DRAW
-        return -0.01
+        return 0
     if done and winner == cur_player:  # WIN
-        return +0.1
+        return +1
     if done and winner != cur_player:  # LOST
-        return -0.1
+        return -1
     return 0
 
 
