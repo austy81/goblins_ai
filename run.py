@@ -12,7 +12,7 @@ from goblins import game
 # https://github.com/DanielSlater/AlphaToe
 def run():
     a1 = agent_keras.AgentKeras()
-    a2 = agent_max_q.AgentMaxQ()
+    a2 = agent_random.AgentRandom()
     no_wins = [0, 0, 0]
     player_1 = 1
     player_2 = 2
@@ -47,19 +47,19 @@ def run():
                 cur_player = player_1 if cur_player == player_2 else player_2
 
         if episode % 10000 == 0:
-            #a1 = agent_me.AgentMe()
+            # a1 = agent_me.AgentMe()
             game.render(board)
             print('Episode {} WINS {}: {} {}: {} DRAWS: {}'.format(
                 episode, a1.__class__.__name__, no_wins[1], a2.__class__.__name__, no_wins[2], no_wins[0]))
-            #time.sleep(1)
+            # time.sleep(1)
             no_wins = [0, 0, 0]
 
 
 def _get_reward(moved, done, winner, cur_player):
     if not moved:
-        return -10000
+        return -10
     if done and not winner:  # DRAW
-        return 0
+        return 0.4
     if done and winner == cur_player:  # WIN
         return +1
     if done and winner != cur_player:  # LOST

@@ -13,7 +13,7 @@ class AgentKeras:
     def __init__(self):
         self.history = []
         self.model = Sequential()
-        self.model.add(Dense(64, input_dim=1))
+        self.model.add(Dense(64, input_dim=18))
         self.model.add(Activation('relu'))
         self.model.add(Dense(9))
         self.model.add(Activation('softmax'))
@@ -35,9 +35,29 @@ class AgentKeras:
 
     def learn(self, board, action, reward):
         self.history.append(
-            {'state': board, 'action': action, 'reward': reward})
-        if reward != 0:
+            {'state': self._board_to_state(board), 'action': action})
 
+        if reward < -1:  # unallowed move
+            state = self._board_to_state(board)
+            predict = self.model.predict(state)[0]
+            predict[action] += reward
+            self.model.train_on_batch(np.array([state]), np.array([predict]))
+            return
+
+        if reward != 0:  # end of game
+            x = []
+            y = []
+            for history_entry in self.history:
+                state = history_entry['state']
+                action = history_entry['action']
+
+                predict = self.model.predict(state)[0]  # get current prediction
+                predict[action] += reward  # add reward
+                
+                x.append(state)
+                y.append(predict)
+
+            self.model.train_on_batch(np.array(x), y)
 
     def _board_to_state(self, board):
         state = []
@@ -47,4 +67,4 @@ class AgentKeras:
         for cell in board:
             filled = 1 if cell == 2 else 0
             state.append(filled)
-        return state
+        return np.array(state)
