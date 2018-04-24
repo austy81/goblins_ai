@@ -11,13 +11,13 @@ from goblins import game
 
 # https://github.com/DanielSlater/AlphaToe
 def run():
+    a2 = agent_max_q.AgentMaxQ()
     a1 = agent_keras.AgentKeras()
-    a2 = agent_random.AgentRandom()
     no_wins = [0, 0, 0]
     player_1 = 1
     player_2 = 2
 
-    for episode in range(1, 200001):
+    for episode in range(1, 3001):
         done = False
         cur_player = player_1
         cur_agent = a1
@@ -34,9 +34,9 @@ def run():
                 if winner:
                     no_wins[cur_player] += 1
                     if cur_player == player_2:
-                        a1.learn(list(board), 0, -20)
+                        a1.learn(list(board), 0, -1)
                     else:
-                        a2.learn(list(board), 0, -20)
+                        a2.learn(list(board), 0, -1)
                 else:  # draw game
                     no_wins[0] += 1
                 a1.new_game()
@@ -46,7 +46,7 @@ def run():
                 cur_agent = a1 if cur_player == player_2 else a2
                 cur_player = player_1 if cur_player == player_2 else player_2
 
-        if episode % 10000 == 0:
+        if episode % 100 == 0:
             # a1 = agent_me.AgentMe()
             game.render(board)
             print('Episode {} WINS {}: {} {}: {} DRAWS: {}'.format(
