@@ -21,19 +21,21 @@ class AgentMaxQ:
 
     def learn(self, board, action, reward):
         state = self._board_to_state(board)
-        if reward == -100:
-            self.Q[state, action] += -100
+        if reward < -1:
+            self.Q[state, action] += reward
             return
         self.history.append(
             {'state': state, 'action': action, 'reward': reward})
         self._propagate_reward(reward)
 
     def _propagate_reward(self, reward):
-        max_history = len(self.history)
-        for i in range(0, max_history):
-            exponent = max_history - i
-            reward_lowered = reward * (self.alpha ** exponent)
-            self.Q[self.history[i]['state'], self.history[i]['action']] += reward_lowered
+        alfa = 0.68
+        reward_coeficient = alfa ** 9
+        for history_entry in self.history:
+            state = history_entry['state']
+            action = history_entry['action']     
+            self.Q[state, action] += reward * reward_coeficient
+            reward_coeficient = reward_coeficient / alfa
 
             # alpha * (reward + np.max(Q[new_state]) - Q[old_state, action])
 

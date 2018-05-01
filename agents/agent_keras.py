@@ -28,6 +28,7 @@ class AgentKeras:
         prediction = self.model.predict(np.asarray([state]), batch_size=1)[0]
         max = np.max(prediction)
         min = np.min(prediction)
+        
         if max == min:
             return randint(0, 8)
         return np.argmax(prediction)
